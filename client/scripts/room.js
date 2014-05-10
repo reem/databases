@@ -6,7 +6,7 @@ var room = (function () {
     this.name = name;
     this.messages = [];
     this.selector = selector || function (datum) {
-          return datum.room === this.name;
+      return datum.room === this.name;
     };
 
     this.getMessages();
@@ -59,12 +59,12 @@ var room = (function () {
       error: function () {
         console.log('Chatterbox: Failed to send room.');
       }
-    });  
+    });
   };
 
   Room.prototype.serialize = function () {
     return JSON.stringify({
-      name: this.name
+      roomname: this.name
     });
   };
 
