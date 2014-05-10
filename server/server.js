@@ -1,15 +1,16 @@
 /* globals require, __dirname */
 var express = require("express");
 var app = express();
-var _  = require("underscore");
+var dbConnection = require("./dbConnection.js");
+
 app.configure(function(){
   app.set("port", 8080);
   app.use(express.logger("dev"));
-  app.use(express.bodyParser());
+  app.use(express.json());
   app.use(express.methodOverride());
-  app.use(express.static(__dirname +"/../client"));
+  app.use(express.static(__dirname + "/../client"));
   app.use(app.router);
-  app.use(function(err, req, res, next){
+  app.use(function(err, req, res){
     console.error(err.stack);
     dbConnection.close();
     res.send(500);
@@ -19,4 +20,4 @@ app.configure(function(){
 require("./routes.js")(app);
 
 app.listen(app.get("port"));
-console.log("on 3k");
+console.log("Listening on ", app.get("port"));
