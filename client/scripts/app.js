@@ -42,6 +42,7 @@ var app = (function () {
 
   var currentRoom = new room.PublicRoom('main', function () { return true; });
   var currentUser = new user.User(getParameterByName('username'));
+  currentUser.send();
 
   var run = function () {
     $('#main').find('ul').remove();
@@ -59,7 +60,7 @@ var app = (function () {
         console.log('Chatterbox: Rooms Received!');
         // make a new room for each uniq room in messages
         _(JSON.parse(data).results)
-          .each(function (dataRoom) { new room.PublicRoom(dataRoom.name); });
+          .each(function (dataRoom) { new room.PublicRoom(dataRoom.roomname); });
       },
       error: function () {
         console.log('Chatterbox: Failed to get rooms.');
