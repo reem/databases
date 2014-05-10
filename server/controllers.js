@@ -11,7 +11,7 @@ var sqlGetter = function (promiseCreator) {
   return function (req, res, next) {
     promiseCreator()
       .then(function (data) {
-        res.json(data);
+        res.json(JSON.stringify({results: data}));
       })
       .fail(function (err) {
         next(err);
@@ -24,6 +24,7 @@ var sqlSetter = function (promiseCreator, fields) {
     promiseCreator(toQuery(req.body, fields))
       .then(function () {
         res.send(201);
+        console.log('Saving: ', req.body);
       })
       .fail(function (err) {
         next(err);
@@ -33,12 +34,12 @@ var sqlSetter = function (promiseCreator, fields) {
 
 module.exports = {
   getMessages: sqlGetter(models.getMessages),
-  addMessage: sqlSetter(models.addMessage, []),
+  addMessage: sqlSetter(models.addMessage, ['text', 'username', 'roomname']),
 
   getUsers: sqlGetter(models.getUsers),
-  addUser: sqlSetter(models.addUser, []),
+  addUser: sqlSetter(models.addUser, ['username']),
 
   getRooms: sqlGetter(models.getRooms),
-  addRoom: sqlSetter(models.addRoom, [])
+  addRoom: sqlSetter(models.addRoom, ['roomname'])
 };
 
