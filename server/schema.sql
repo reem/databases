@@ -1,0 +1,74 @@
+DROP DATABASE IF EXISTS chat;
+CREATE DATABASE chat;
+
+USE chat;
+
+DROP TABLE IF EXISTS `Users`;
+
+CREATE TABLE `Users` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Messages'
+--
+-- ---
+
+DROP TABLE IF EXISTS `Messages`;
+
+CREATE TABLE `Messages` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `text` VARCHAR(10000) NULL DEFAULT NULL,
+  `userid` INTEGER NULL DEFAULT NULL,
+  `roomid` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Rooms'
+--
+-- ---
+
+DROP TABLE IF EXISTS `Rooms`;
+
+CREATE TABLE `Rooms` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `roomname` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Friends'
+--
+-- ---
+
+DROP TABLE IF EXISTS `Friends`;
+
+CREATE TABLE `Friends` (
+  `FOLLOWER` INTEGER NULL DEFAULT NULL,
+  `FOLLOWED` INTEGER NULL DEFAULT NULL,
+  `id` INTEGER NOT NULL,
+  PRIMARY KEY (`id`),
+KEY (`FOLLOWER`)
+);
+
+-- ---
+-- Foreign Keys
+-- ---
+
+ALTER TABLE `Messages` ADD FOREIGN KEY (userid) REFERENCES `Users` (`id`);
+ALTER TABLE `Messages` ADD FOREIGN KEY (roomid) REFERENCES `Rooms` (`id`);
+ALTER TABLE `Friends` ADD FOREIGN KEY (FOLLOWER) REFERENCES `Users` (`id`);
+ALTER TABLE `Friends` ADD FOREIGN KEY (FOLLOWED) REFERENCES `Users` (`id`);
+
+-- ---
+-- Table Properties
+-- ---
+
+ALTER TABLE `Users` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+ALTER TABLE `Messages` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+ALTER TABLE `Rooms` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+ALTER TABLE `Friends` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
